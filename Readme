@@ -1,0 +1,7 @@
+UPDATED ON: 20/03/2025
+soft eng proj
+how to run:
+make sure na dl niyo requirements sa "requirements.txt" and php composer
+after donwloading all the requirements,
+write "python script.py" in the terminal
+and serve "index.php"

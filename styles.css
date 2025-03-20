@@ -1,0 +1,476 @@
+:root {
+    --primary-color: #00c507;
+    --primary-dark-color: #00a005;
+    --primary-light-color: #9aff9d;
+    --primary-lighter-color: #e5ffe6;
+    --grey: #808080;
+    --light-grey: #D3D3D3;
+    --lighter-grey: #F2F2F2;
+    --white: #FFFFFF;
+    --black: #000000;
+    --mid-grey: #666A6D;
+    --dark-medium-grey: #A9A9A9;
+    --background: #FBFBFE;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", serif;
+    background: var(--background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.poppins-thin {
+    font-family: "Poppins", serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+  
+  .poppins-extralight {
+    font-family: "Poppins", serif;
+    font-weight: 200;
+    font-style: normal;
+  }
+  
+  .poppins-light {
+    font-family: "Poppins", serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .poppins-regular {
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .poppins-medium {
+    font-family: "Poppins", serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .poppins-semibold {
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  .poppins-bold {
+    font-family: "Poppins", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .poppins-extrabold {
+    font-family: "Poppins", serif;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+@media screen and (max-width:481px) { 
+
+/* ============================================GENERAL============================================== */
+
+.container-20 {
+    border-radius: 20px;
+}
+
+.container-50 {
+    border-radius: 50%;
+}
+
+
+
+/* ============================================HEADER============================================== */
+.header {
+    width: 100%;
+    display: flex;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--light-grey);
+}
+
+.header .logo {
+    font-size: 25px;
+    color: var(--primary-color);
+}
+
+.header .icon-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 5px;
+    transition: .3s ease;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.header .icon-container:active {
+    background: var(--light-grey);
+    color: var(--primary-light-color);
+}
+
+.header .icon-container span {
+    font-size: 25px;
+    color: var(--primary-color);
+}
+
+/* ============================================WEATHER============================================== */
+
+.informations {
+    width: 100%;
+    padding: 10px 15px;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.informations  .weather-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    padding:  10px 20px;
+}
+
+.informations .weather-info .info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--white);
+    max-width: 135px;
+}
+
+.informations .weather-info .info .location {
+    font-size: 10px;
+}
+
+.informations .weather-info .info .temperature {
+    font-size: 36px;
+}
+
+.informations .weather-info .image-container {
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+    margin-left: auto;
+}
+
+.informations .weather-info .image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ============================================CARDS============================================== */
+
+.informations .cards-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.informations .cards-container .container-20 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 48%;
+    min-width: 160px;
+    background: var(--lighter-grey);
+    border: 1px solid var(--light-grey);
+    padding: 15px;
+}
+
+.informations .cards-container .container-20 span {
+    font-size: 45px;
+    color: rgb(98, 98, 255); 
+}
+
+.informations .cards-container .container-20 .ph {
+    color: orange;
+}
+
+.informations .cards-container .container-20 .moisture {
+    color: var(--primary-color);
+}
+
+.informations .cards-container .container-20 .card-info .title {
+    font-size: 16px;
+}
+
+.informations .cards-container .container-20 .card-info .number {
+    color: var(--mid-grey);
+}
+
+/* ============================================my plants============================================== */
+
+.cards-container-plants {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cards-container-plants .heading {
+    font-size: 12px;
+}
+
+.cards-container-plants .cards-slider {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.cards-container-plants .cards-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.cards-container-plants .cards-slider .card {
+    width: 100%;
+    min-width: 110px;
+    max-width: 110px;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cards-container-plants .cards-slider .card .image-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    z-index: 5;
+    position: absolute;
+}
+
+.cards-container-plants .cards-slider .card .image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.cards-container-plants .cards-slider .card .filter {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.cards-container-plants .cards-slider .card .title {
+    position: relative;
+    z-index: 15;
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    padding: 10px;
+    color: var(--white);
+}
+/* ===========================================inspect for diseases============================================== */
+
+.inspect-diseases {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    margin-bottom: 100px;
+}
+
+.inspect-diseases .container-20 {
+    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.2);
+    background: var(--lighter-grey);
+    padding: 10px;
+}
+
+.inspect-diseases .container-20 .headings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.inspect-diseases .container-20 .headings .texts {
+    display: flex;
+    flex-direction: column;
+}
+
+.inspect-diseases .container-20 .headings .texts .heading1 {
+    font-size: 24px;
+    color: var(--grey);
+}
+
+.inspect-diseases .container-20 .headings .texts .heading {
+    font-size: 12px;
+    color: var(--mid-grey);
+}
+
+.inspect-diseases .container-20 .headings .image-container {
+    height: 120px;
+    width: 120px;
+    overflow: hidden;
+}
+
+.inspect-diseases .container-20 .headings .image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.inspect-diseases .container-20 .button-container {
+    text-decoration: none;
+}
+
+.inspect-diseases .container-20 .button-container .button {
+    width: 100%;
+    border-radius: 25px;
+    background: var(--primary-color);
+    display: flex;
+    padding: 10px 20px;
+    transition: .3s ease;
+}
+
+.inspect-diseases .container-20 .button-container .button:active {
+    background: var(--primary-dark-color);
+    color: var(--light-grey);
+}
+
+.inspect-diseases .container-20 .button-container .button .text {
+    color: var(--white);
+    font-size: 16px;
+    width: 100%;
+}
+
+.inspect-diseases .container-20 .button-container .button span {
+    font-size: 25px;
+    color: var(--white);
+}
+
+
+
+/* ===========================================navigation============================================== */
+
+.navigation {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    background: var(--lighter-grey);
+}
+
+.navigation .nav-item {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    width: 100px;
+    border-radius: 15px;
+    transition: .3s ease;
+    padding: 5px;
+}
+
+.navigation .nav-item .text {
+    font-size: 16px;
+}
+
+.navigation .nav-item span {
+    font-size: 25px;
+}
+
+.navigation .nav-item:active {
+    background: var(--light-grey);
+    color: var(--grey);
+}
+
+/* ===========================================detect disease============================================== */
+
+.upload-photo {
+    width: 100%;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upload-photo .img-container {
+    width: 100%;
+    background-image: url('resrources/noImagePreview.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 217px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.upload-photo .img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.upload-photo .detect-button {
+    width: 100%;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    border-radius: 10px;
+    color: var(--white);
+    gap: 10px;
+    font-size: 16px;
+    border: none;
+}
+
+.upload-photo span {
+    font-size: 20px;
+
+}
+
+form input {
+    display: none;
+}
+
+/* ===========================================info container============================================== */
+
+.info-container {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+    
+
+
+
+}
