@@ -82,8 +82,6 @@ body {
     font-style: normal;
   }
 
-@media screen and (max-width:481px) { 
-
 /* ============================================GENERAL============================================== */
 
 .container-20 {
@@ -93,6 +91,54 @@ body {
 .container-50 {
     border-radius: 50%;
 }
+
+.icon-text {
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    padding: 5px 10px;
+    gap: 5px;
+    max-width: fit-content;
+    color: var(--white);
+    font-size: 12px;
+}
+
+.icon-text span {
+    font-size: 15px;
+}
+
+.diseases-pad-15 {
+    padding: 15px;
+}
+
+.diseases {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 70px;
+}
+
+.diseases .disease {
+    background: var(--lighter-grey);
+    padding: 5px 10px;
+    border: 1px solid var(--dark-medium-grey);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Set number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.diseases .disease .name {
+    margin-bottom: 5px;
+}
+
+
 
 
 
@@ -455,9 +501,7 @@ body {
 
 }
 
-form input {
-    display: none;
-}
+
 
 /* ===========================================info container============================================== */
 
@@ -468,9 +512,113 @@ form input {
     justify-content: center;
 }
 
+/* ===========================================HIstory============================================== */
 
-    
+.history {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 15px;
+    gap: 10px;
+    margin-bottom: 70px;
+}
+
+.history .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history .cards-container .card .card-container {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--grey);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    padding-right: 5px;
+}
+
+.history .cards-container .card .date {
+    color: var(--grey);
+    font-size: 12px;
+    font-weight: var;
+}
+
+.history .cards-container .card .card-container .img-container {
+    width: 100%;
+    height: 100px;
+    max-width: 120px;
+}
+
+.history .cards-container .card .card-container .img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.history .cards-container .card .card-container .text-container {
+    width: 100%;
+    max-width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Set number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
 
+/* ===========================================PLANT============================================== */
+.plant {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    margin-bottom: 70px;
+}
+
+.plant .name-classification .classification {
+    font-size: 12px;
+    color: var(--grey);
+}
+
+.plant .name-classification .name {
+    font-size: 20px;
+}
+
+.plant .image-container {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.plant .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.plant .about {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.expanded {
+    display: block !important;
+}
+
+.plant .about .text {
+    width: 100%;
+    max-width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* Set number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 
 }
+

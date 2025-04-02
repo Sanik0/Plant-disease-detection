@@ -1,0 +1,224 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
+    $imagePath = $_FILES['image']['tmp_name'];
+    $apiUrl = "http://localhost:5000/predict";
+
+
+    $cfile = new CURLFile($imagePath, $_FILES['image']['type'], $_FILES['image']['name']);
+    $data = ['image' => $cfile];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $result = json_decode($response, true);
+
+    if (!$result || isset($result['error'])) {
+        echo "Error: " . ($result['error'] ?? 'Invalid API response') . "<br>";
+        echo "<pre>$response</pre>"; 
+        exit;
+    }
+}   
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rum+Raisin&display=swap" rel="stylesheet">
+    <title>PlantCam</title>
+</head>
+<body>
+    <section class="header">
+        <div class="logo poppins-regular">
+            Group 7
+        </div>
+    </section>
+
+    <form action="" method="POST" enctype="multipart/form-data" class="upload-photo">
+        <div class="img-container">
+            <img id="imagePreview">
+        </div>
+        <input type="file" name="image" accept="image/*" id="imageInput" accept="image/*" required>
+        <button type="submit" class="detect-button">
+            <span class="material-symbols-outlined">
+                image_search
+            </span>
+            Detect Disease
+        </button>
+    </form>
+
+    <div class="info-container">
+        <?php if (!empty($result)) : ?>
+            Plant disease: <?= htmlspecialchars($result['disease']) ?>
+            Confidence: <?= round($result['confidence'] * 100, 2) . "%" ?>
+        <?php endif ?>
+    </div>
+
+    <div class="diseases diseases-pad-15">
+            <div class="icon-text">
+                <span class="material-symbols-outlined">
+                    microbiology
+                </span>
+                Diseases
+            </div>
+
+            <div class="disease expandableText">
+                <div class="name poppins-medium"> Powdery Mildew</div>
+                    Powdery mildew is a fungal disease that affects a wide range of plants. Powdery mildew diseases are caused by many different species of ascomycete fungi in the order Erysiphales. Powdery mildew is one of the easier plant diseases to identify, as the signs of the causal pathogen are quite distinctive. Infected plants display white powdery spots on the leaves and stems.[1] This mycelial layer may quickly spread to cover all of the leaves. The lower leaves are the most affected, but the mildew can appear on any above-ground part of the plant. As the disease progresses, the spots get larger and denser as large numbers of asexual spores are formed, and the mildew may spread up and down the length of the plant.
+
+                    Powdery mildew grows well in environments with high humidity and moderate temperatures; greenhouses provide an ideal moist, temperate environment for the spread of the disease. This causes harm to agricultural and horticultural practices where powdery mildew may thrive in a greenhouse setting.[2] In an agricultural or horticultural setting, the pathogen can be controlled using chemical methods, bio-organic methods, and genetic resistance. It is important to be aware of powdery mildew and its management strategies as the resulting disease can significantly reduce important crop yields.[3]
+            </div>
+
+            <div class="disease expandableText">
+                <div class="name poppins-medium">Furasium Wilt</div>
+                    Fusarium wilt is a common vascular wilt fungal disease, exhibiting symptoms similar to Verticillium wilt. This disease has been investigated extensively since the early years of this century. The pathogen that causes Fusarium wilt is Fusarium oxysporum (F. oxysporum).[1] The species is further divided into formae speciales based on host plant.
+
+                    Hosts and symptoms
+            </div>
+
+            <div class="disease expandableText">
+                <div class="name poppins-medium">Yellow vewin mosaic virus</div>
+                    Bhendi yellow vein mosaic virus (BYVMV) or okra yellow vein mosaic (OYVMV) is a viral disease caused by monopartite Begomovirus affecting okra plants.[1][2] It was first found in 1924 in Bombay, India, and Sri Lanka.[3] It is the major limitation of the production of okra.[4] This disease is transmitted by whitefly.
+            </div>
+
+            <div class="disease expandableText">
+                <div class="name poppins-medium">Cercospora leaf spot</div>
+                    Cercospora is a genus of ascomycete fungi. Most species have no known sexual stage, and when the sexual stage is identified, it is in the genus Mycosphaerella.[2] Most species of this genus cause plant diseases, and form leaf spots. It is a relatively well-studied genus of fungi, but there are countless species not yet described, and there is still much to learn about the best-known members of the genus.
+            </div>
+
+        </div>
+
+
+    <!-- ===================navigation=================== -->
+
+    <div class="navigation">
+
+        <a href="history.php" class="nav-item">
+            <span class="material-symbols-outlined">
+                history
+            </span>
+            <div class="text">
+                History
+            </div>
+        </a>
+
+        <a href="index.php" class="nav-item">
+            <span class="material-symbols-outlined">
+                home
+            </span>
+            <div class="text">
+                Home
+            </div>
+        </a>
+
+        <div class="nav-item">
+            <span class="material-symbols-outlined">
+                settings
+            </span>
+            <div class="text">
+                Settings
+            </div>
+        </div>
+
+    </div>
+
+
+
+        
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from flask import Flask, request, jsonify
+import tensorflow as tf
+import numpy as np
+import cv2
+
+# Load model
+MODEL_PATH = "plant_disease_model.h5"
+model = tf.keras.models.load_model(MODEL_PATH)
+# Get number of output classes from the model
+num_classes = model.output_shape[-1]
+print(f"\n🔹 Model Output Classes: {num_classes}\n")  # Clearly prints the number
+
+
+# Ensure class labels match model output
+CLASS_LABELS = [
+    "Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust", "Apple___healthy",
+    "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew", "Cherry_(including_sour)___healthy",
+    "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot", "Corn_(maize)___Common_rust_", "Corn_(maize)___Northern_Leaf_Blight", "Corn_(maize)___healthy",
+    "Grape___Black_rot", "Grape___Esca_(Black_Measles)", "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)", "Grape___healthy",
+    "Orange___Haunglongbing_(Citrus_greening)", "Peach___Bacterial_spot", "Peach___healthy",
+    "Pepper,_bell___Bacterial_spot", "Pepper,_bell___healthy",
+    "Potato___Early_blight", "Potato___Late_blight", "Potato___healthy",
+    "Raspberry___healthy", "Soybean___healthy",
+    "Squash___Powdery_mildew",
+    "Strawberry___Leaf_scorch", "Strawberry___healthy",
+    "Tomato___Bacterial_spot", "Tomato___Early_blight", "Tomato___Late_blight", "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot", "Tomato___Spider_mites Two-spotted_spider_mite", "Tomato___Target_Spot",
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus", "Tomato___Tomato_mosaic_virus", "Tomato___healthy"
+]
+
+
+app = Flask(__name__)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image uploaded'}), 400
+        
+        file = request.files['image']
+        img = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
+
+        if img is None:
+            return jsonify({'error': 'Invalid image format'}), 400
+
+        img = cv2.resize(img, (224, 224)) / 255.0  # Resize and normalize
+        img = np.expand_dims(img, axis=0)  # Add batch dimension
+
+        predictions = model.predict(img)[0]
+
+        if len(predictions) != len(CLASS_LABELS):
+            return jsonify({'error': 'Model output size mismatch'}), 500
+
+        predicted_class = CLASS_LABELS[np.argmax(predictions)]
+        confidence = float(np.max(predictions))
+
+        return jsonify({'disease': predicted_class, 'confidence': confidence})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

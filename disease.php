@@ -41,19 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
         <div class="logo poppins-regular">
             Group 7
         </div>
-
-        <div class="icon-container">
-            <span class="material-symbols-outlined">
-                settings
-            </span>
-        </div>
     </section>
 
     <form action="" method="POST" enctype="multipart/form-data" class="upload-photo">
         <div class="img-container">
             <img id="imagePreview">
         </div>
-        <label for="imageInput">Please select an image</label>
         <input type="file" name="image" accept="image/*" id="imageInput" accept="image/*" required>
         <button type="submit" class="detect-button">
             <span class="material-symbols-outlined">
@@ -63,26 +56,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
         </button>
     </form>
 
-    <div class="info-container">
-        <?php if (!empty($result)) : ?>
-            Plant disease: <?= htmlspecialchars($result['disease']) ?>
-            Confidence: <?= round($result['confidence'] * 100, 2) . "%" ?>
-        <?php endif ?>
+
+
+
+
+<?php if (!empty($result) && isset($result['predictions'])) : ?>
+    <div class="diseases diseases-pad-15">
+        <div class="icon-text">
+            <span class="material-symbols-outlined">
+                microbiology
+            </span>
+            Diseases
+        </div>
+        <?php foreach ($result['predictions'] as $prediction) : ?>
+            <div class="disease expandableText">
+                <div class="name poppins-medium"> <?= htmlspecialchars($prediction['disease']) ?></div>
+                <?= round($prediction['confidence'] * 100, 2) . "%" ?>
+            </div>
+        <?php endforeach; ?>
     </div>
+<?php endif; ?>
+   
+
+
 
 
     <!-- ===================navigation=================== -->
 
     <div class="navigation">
 
-        <div class="nav-item">
+        <a href="history.php" class="nav-item">
             <span class="material-symbols-outlined">
                 history
             </span>
             <div class="text">
                 History
             </div>
-        </div>
+        </a>
 
         <a href="index.php" class="nav-item">
             <span class="material-symbols-outlined">

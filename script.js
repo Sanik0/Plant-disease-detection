@@ -16,3 +16,10 @@ document.getElementById("imageInput").addEventListener("change", function(event)
         reader.readAsDataURL(file); // Convert file to base64
     }
 });
+
+
+document.querySelectorAll(".expandableText").forEach(element => {
+    element.addEventListener("click", function() {
+        this.classList.toggle("expanded");
+    });
+});

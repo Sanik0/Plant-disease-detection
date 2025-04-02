@@ -101,7 +101,7 @@
             </div>
             <div class="cards-slider">
                 
-                <div class="card">
+                <a href="plant.php" class="card">
                     <div class="filter"></div>
                     <div class="image-container">
                         <img src="resrources/okra.jpg" alt="">
@@ -109,7 +109,7 @@
                     <div class="title">
                         <small class="poppins--medium-bold">Okra</small>
                     </div>
-                </div>
+                </a>
 
                 <div class="card">
                     <div class="filter"></div>
@@ -233,14 +233,14 @@
 
     <div class="navigation">
 
-        <div class="nav-item">
+        <a href="history.php" class="nav-item">
             <span class="material-symbols-outlined">
                 history
             </span>
             <div class="text">
                 History
             </div>
-        </div>
+        </a>
 
         <a href="index.php" class="nav-item">
             <span class="material-symbols-outlined">
