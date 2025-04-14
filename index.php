@@ -292,9 +292,20 @@
                 console.error('Error fetching Ph Level:', error);
             });
     }
+    function fetchHumidity() {
+        fetch('getHumidity.php') 
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('humiditySensor').innerText = data + '%';
+            })
+            .catch(error => {
+                console.error('Error fetching Humidity:', error);
+            });
+    }
     setInterval(fetchTemperature, 500);
     setInterval(fetchMoisture, 500);
     setInterval(fetchPh,500);
+    setInterval(fetchHumidity,500);
     </script>
 
 
