@@ -262,7 +262,7 @@
     </div>
     <script>
 function fetchTemperature() {
-    fetch('temperature.txt')
+    fetch('getTemp.php')  // Changed from 'temperature.txt'
         .then(response => response.text())
         .then(data => {
             document.getElementById('tempSensor').innerText = data + '°C';
@@ -271,12 +271,7 @@ function fetchTemperature() {
             console.error('Error fetching temperature:', error);
         });
 }
-
-// Load once immediately
-fetchTemperature();
-
-// Refresh every 5 seconds
-setInterval(fetchTemperature, 5000);
+setInterval(fetchTemperature, 500);
 </script>
 
 
