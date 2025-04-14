@@ -42,11 +42,11 @@
                     humidity_percentage
                 </span>
                 <div class="card-info">
-                    <div class="title poppins-medium">
-                        Humidity
+                    <div class="temper  ature poppins-medium">
+                        Temp
                     </div>
-                    <div class="number poppins-medium">
-                        55%
+                    <div class="number poppins-medium" id="tempSensor">
+                    Loading...
                     </div>
                 </div>
             </div>
@@ -226,7 +226,6 @@
 
 
 
-
     </section>
 
     <!-- ===================navigation=================== -->
@@ -261,9 +260,25 @@
         </div>
 
     </div>
+    <script>
+function fetchTemperature() {
+    fetch('temperature.txt')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('tempSensor').innerText = data + '°C';
+        })
+        .catch(error => {
+            console.error('Error fetching temperature:', error);
+        });
+}
 
+// Load once immediately
+fetchTemperature();
 
-        
+// Refresh every 5 seconds
+setInterval(fetchTemperature, 5000);
+</script>
+
 
     <script src="script.js"></script>
 </body>
