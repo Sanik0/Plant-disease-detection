@@ -59,8 +59,8 @@
                     <div class="title poppins-medium">
                         pH Level
                     </div>
-                    <div class="number poppins-medium">
-                        6.5
+                    <div class="number poppins-medium" id="phSensor">
+                        Loading...
                     </div>
                 </div>
             </div>
@@ -73,8 +73,8 @@
                     <div class="title poppins-medium">
                        Moisture
                     </div>
-                    <div class="number poppins-medium">
-                        55%
+                    <div class="number poppins-medium" id="moistureSensor">
+                        Loading...
                     </div>
                 </div>
             </div>
@@ -86,8 +86,8 @@
                     <div class="title poppins-medium">
                         Humidity
                     </div>
-                    <div class="number poppins-medium">
-                        55%
+                    <div class="number poppins-medium"id="humiditySensor">
+                        Loading...
                     </div>
                 </div>
             </div>
@@ -261,18 +261,41 @@
 
     </div>
     <script>
-function fetchTemperature() {
-    fetch('getTemp.php')  // Changed from 'temperature.txt'
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('tempSensor').innerText = data + '°C';
-        })
-        .catch(error => {
-            console.error('Error fetching temperature:', error);
-        });
-}
-setInterval(fetchTemperature, 500);
-</script>
+    function fetchTemperature() {
+        fetch('getTemp.php')  // Changed from 'temperature.txt'
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('tempSensor').innerText = data + '°C';
+            })
+            .catch(error => {
+                console.error('Error fetching temperature:', error);
+            });
+    }
+    function fetchMoisture() {
+        fetch('getMoisture.php') 
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('moistureSensor').innerText = data + '%';
+            })
+            .catch(error => {
+                console.error('Error fetching Soil Moisture:', error);
+            });
+    }
+
+    function fetchPh() {
+        fetch('getPh.php') 
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('phSensor').innerText = data + '%';
+            })
+            .catch(error => {
+                console.error('Error fetching Ph Level:', error);
+            });
+    }
+    setInterval(fetchTemperature, 500);
+    setInterval(fetchMoisture, 500);
+    setInterval(fetchPh,500);
+    </script>
 
 
     <script src="script.js"></script>
