@@ -285,10 +285,20 @@ function fetchMoisture() {
     fetch('getMoisture.php')
         .then(response => response.text())
         .then(data => {
-            document.getElementById('moistureSensor').innerText = data + '%';
+            const moistureDisplay = document.getElementById('moistureSensor');
+            if (data === '-') {
+                moistureDisplay.innerText = "OFF";
+                moistureDisplay.style.color = "#ff4444";
+                moistureDisplay.style.fontStyle = "italic";
+            } else {
+                moistureDisplay.innerText = data + '%';
+                moistureDisplay.style.color = "";
+                moistureDisplay.style.fontStyle = "";
+            }
         })
         .catch(error => {
-            console.error('Error fetching Soil Moisture:', error);
+            console.error('Error fetching Soil Moisture Value:', error);
+            document.getElementById('moistureSensor').innerText = "ERR";
         });
 }
 function fetchPh() {
