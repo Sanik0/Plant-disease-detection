@@ -261,40 +261,38 @@
 
     </div>
     <script>
-    function fetchTemperature() {
-        fetch('getTemp.php')  // Changed from 'temperature.txt'
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('tempSensor').innerText = data + '°C';
-            })
-            .catch(error => {
-                console.error('Error fetching temperature:', error);
-            });
-    }
-    function fetchMoisture() {
-        fetch('getMoisture.php') 
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('moistureSensor').innerText = data + '%';
-            })
-            .catch(error => {
-                console.error('Error fetching Soil Moisture:', error);
-            });
-    }
-
-    function fetchPh() {
+function fetchTemperature() {
+    fetch('getTemp.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('tempSensor').innerText = data + '°C';
+        })
+        .catch(error => {
+            console.error('Error fetching temperature:', error);
+        });
+}
+function fetchMoisture() {
+    fetch('getMoisture.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('moistureSensor').innerText = data + '%';
+        })
+        .catch(error => {
+            console.error('Error fetching Soil Moisture:', error);
+        });
+}
+function fetchPh() {
     fetch('getPh.php')
         .then(response => response.text())
         .then(data => {
             const phDisplay = document.getElementById('phSensor');
-            
             if (data === '-') {
                 phDisplay.innerText = "OFF";
                 phDisplay.style.color = "#ff4444";
                 phDisplay.style.fontStyle = "italic";
             } else {
                 phDisplay.innerText = data + '%';
-                phDisplay.style.color = ""; // Reset to default
+                phDisplay.style.color = "";
                 phDisplay.style.fontStyle = "";
             }
         })
@@ -303,22 +301,33 @@
             document.getElementById('phSensor').innerText = "ERR";
         });
 }
+function fetchHumidity() {
+    fetch('getHumidity.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('humiditySensor').innerText = data + '%';
+        })
+        .catch(error => {
+            console.error('Error fetching Humidity:', error);
+        });
+}
 
-    function fetchHumidity() {
-        fetch('getHumidity.php') 
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('humiditySensor').innerText = data + '%';
-            })
-            .catch(error => {
-                console.error('Error fetching Humidity:', error);
-            });
-    }
-    setInterval(fetchTemperature, 500);
-    setInterval(fetchMoisture, 500);
-    setInterval(fetchPh,500);
-    setInterval(fetchHumidity,500);
-    </script>
+// Initial fetch on page load
+window.onload = () => {
+    fetchTemperature();
+    fetchMoisture();
+    fetchPh();
+    fetchHumidity();
+
+    // Delay interval polling slightly
+    setTimeout(() => {
+        setInterval(fetchTemperature, 500);
+        setInterval(fetchMoisture, 500);
+        setInterval(fetchPh, 500);
+        setInterval(fetchHumidity, 500);
+    }, 300);
+};
+</script>
 
 
     <script src="script.js"></script>

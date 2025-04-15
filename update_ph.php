@@ -1,42 +1,44 @@
 <?php
-header('Content-Type: text/plain');
+// Define file paths
+$dataFile = 'ph.txt';
+$timestampFile = 'ph_time.txt';
 
-// Enable error logging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Get the raw POST data
-$rawData = file_get_contents("php://input");
-
-// Parse the raw data into an array
-parse_str($rawData, $postData);
-
-// Extract values with null coalescing
-$phValue = $postData['phSensor'] ?? null;
-$powerState = $postData['powerState'] ?? 'on';
-
-// Debugging output (check your server's error log)
-error_log("Received - phSensor: " . $phValue . ", powerState: " . $powerState);
-
-// Handle system off state
-if ($powerState === 'off' || $phValue === '-') {
-    if (file_put_contents('ph.txt', '-') !== false) {
-        echo "System Off - Data cleared";
-        error_log("Successfully wrote '-' to ph.txt");
-    } else {
-        http_response_code(500);
-        echo "Error writing to file";
-        error_log("Failed to write to ph.txt");
-    }
-} 
-// Handle valid reading
-else if (is_numeric($phValue)) {
-    file_put_contents('ph.txt', $phValue);
-    echo "PH updated: $phValue";
+// Create file with default "-" if it doesn't exist
+if (!file_exists($dataFile)) {
+    file_put_contents($dataFile, '-');
 }
-// Handle error case
-else {
-    http_response_code(400);
-    echo "Invalid data received";
+
+// Set strict headers
+header('Content-Type: text/plain');
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: 0");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $rawData = file_get_contents("php://input");
+    $postData = [];
+    parse_str($rawData, $postData);
+
+    $phValue = $postData['phSensor'] ?? null;
+    $powerState = strtolower($postData['powerState'] ?? 'off');
+
+    // Handle system off state or no reading
+    if ($powerState === 'off' || $phValue === '-') {
+        file_put_contents($dataFile, '-');
+        echo "OFF";
+        exit;
+    }
+
+    // Handle valid reading
+    if (is_numeric($phValue)) {
+        file_put_contents($dataFile, $phValue);
+        file_put_contents($timestampFile, time());  // Update timestamp only for valid values
+        echo $phValue;
+    } else {
+        http_response_code(400);
+        echo "Invalid data";
+    }
+} else {
+    // Handle GET requests - just return current value
+    echo file_exists($dataFile) ? file_get_contents($dataFile) : '-';
 }
 ?>

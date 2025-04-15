@@ -3,12 +3,16 @@ header("Cache-Control: no-cache, must-revalidate");
 header("Expires: 0");
 header('Content-Type: text/plain');
 
-$phValue = @file_get_contents('ph.txt') ?: '-';
+$dataFile = 'ph.txt';
+$timestampFile = 'ph_time.txt';
 
-// If file contains "-" (system off) or doesn't exist
-if ($phValue === '-') {
-    echo "-";
+$phValue = @file_get_contents($dataFile) ?: '-';
+$lastTime = @file_get_contents($timestampFile);
+
+if ($lastTime === false || time() - intval($lastTime) > 5) {
+    echo "-"; // Consider system OFF
 } else {
     echo $phValue;
 }
+
 ?>
