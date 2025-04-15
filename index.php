@@ -265,10 +265,20 @@ function fetchTemperature() {
     fetch('getTemp.php')
         .then(response => response.text())
         .then(data => {
-            document.getElementById('tempSensor').innerText = data + '°C';
+            const tempDisplay = document.getElementById('tempSensor');
+            if (data === '-') {
+                tempDisplay.innerText = "OFF";
+                tempDisplay.style.color = "#ff4444";
+                tempDisplay.style.fontStyle = "italic";
+            } else {
+                tempDisplay.innerText = data + '%';
+                tempDisplay.style.color = "";
+                tempDisplay.style.fontStyle = "";
+            }
         })
         .catch(error => {
-            console.error('Error fetching temperature:', error);
+            console.error('Error fetching Temperature Value:', error);
+            document.getElementById('tempSensor').innerText = "ERR";
         });
 }
 function fetchMoisture() {
@@ -305,10 +315,20 @@ function fetchHumidity() {
     fetch('getHumidity.php')
         .then(response => response.text())
         .then(data => {
-            document.getElementById('humiditySensor').innerText = data + '%';
+            const humidityDisplay = document.getElementById('humiditySensor');
+            if (data === '-') {
+                humidityDisplay.innerText = "OFF";
+                humidityDisplay.style.color = "#ff4444";
+                humidityDisplay.style.fontStyle = "italic";
+            } else {
+                humidityDisplay.innerText = data + '%';
+                humidityDisplay.style.color = "";
+                humidityDisplay.style.fontStyle = "";
+            }
         })
         .catch(error => {
-            console.error('Error fetching Humidity:', error);
+            console.error('Error fetching Humidity Level:', error);
+            document.getElementById('humiditySensor').innerText = "ERR";
         });
 }
 

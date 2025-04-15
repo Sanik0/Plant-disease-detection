@@ -1,18 +1,44 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Define file paths
+$dataFile = 'temperature.txt';
+$timestampFile = 'temperature_time.txt';
+
+// Create file with default "-" if it doesn't exist
+if (!file_exists($dataFile)) {
+    file_put_contents($dataFile, '-');
+}
+
+// Set strict headers
+header('Content-Type: text/plain');
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: 0");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawData = file_get_contents("php://input");
+    $postData = [];
     parse_str($rawData, $postData);
 
-    if (isset($postData['tempSensor'])) {
-        $temp = $postData['tempSensor'];
-        file_put_contents('temperature.txt', $temp); // Save to file
-        echo "Temperature saved: $temp";
+    $temperatureValue = $postData['tempSensor'] ?? null;
+    $powerState = strtolower($postData['powerState'] ?? 'off');
+
+    // Handle system off state or no reading
+    if ($powerState === 'off' || $temperatureValue === '-') {
+        file_put_contents($dataFile, '-');
+        echo "OFF";
+        exit;
+    }
+
+    // Handle valid reading
+    if (is_numeric($temperatureValue)) {
+        file_put_contents($dataFile, $temperatureValue);
+        file_put_contents($timestampFile, time());  // Update timestamp only for valid values
+        echo $temperatureValue;
     } else {
-        echo "No temperature value received.";
+        http_response_code(400);
+        echo "Invalid data";
     }
 } else {
-    echo "Only POST method is accepted.";
+    // Handle GET requests - just return current value
+    echo file_exists($dataFile) ? file_get_contents($dataFile) : '-';
 }
+?>
