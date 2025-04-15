@@ -283,15 +283,27 @@
     }
 
     function fetchPh() {
-        fetch('getPh.php') 
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('phSensor').innerText = data + '%';
-            })
-            .catch(error => {
-                console.error('Error fetching Ph Level:', error);
-            });
-    }
+    fetch('getPh.php')
+        .then(response => response.text())
+        .then(data => {
+            const phDisplay = document.getElementById('phSensor');
+            
+            if (data === '-') {
+                phDisplay.innerText = "OFF";
+                phDisplay.style.color = "#ff4444";
+                phDisplay.style.fontStyle = "italic";
+            } else {
+                phDisplay.innerText = data + '%';
+                phDisplay.style.color = ""; // Reset to default
+                phDisplay.style.fontStyle = "";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching Ph Level:', error);
+            document.getElementById('phSensor').innerText = "ERR";
+        });
+}
+
     function fetchHumidity() {
         fetch('getHumidity.php') 
             .then(response => response.text())

@@ -1,18 +1,42 @@
 <?php
+header('Content-Type: text/plain');
+
+// Enable error logging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $rawData = file_get_contents("php://input");
-    parse_str($rawData, $postData);
+// Get the raw POST data
+$rawData = file_get_contents("php://input");
 
-    if (isset($postData['phSensor'])) {
-        $phSensor = $postData['phSensor'];
-        file_put_contents('ph.txt', $phSensor); // Save to file
-        echo "Ph Level saved: $phSensor";
+// Parse the raw data into an array
+parse_str($rawData, $postData);
+
+// Extract values with null coalescing
+$phValue = $postData['phSensor'] ?? null;
+$powerState = $postData['powerState'] ?? 'on';
+
+// Debugging output (check your server's error log)
+error_log("Received - phSensor: " . $phValue . ", powerState: " . $powerState);
+
+// Handle system off state
+if ($powerState === 'off' || $phValue === '-') {
+    if (file_put_contents('ph.txt', '-') !== false) {
+        echo "System Off - Data cleared";
+        error_log("Successfully wrote '-' to ph.txt");
     } else {
-        echo "No Ph Level value received.";
+        http_response_code(500);
+        echo "Error writing to file";
+        error_log("Failed to write to ph.txt");
     }
-} else {
-    echo "Only POST method is accepted.";
+} 
+// Handle valid reading
+else if (is_numeric($phValue)) {
+    file_put_contents('ph.txt', $phValue);
+    echo "PH updated: $phValue";
 }
+// Handle error case
+else {
+    http_response_code(400);
+    echo "Invalid data received";
+}
+?>
