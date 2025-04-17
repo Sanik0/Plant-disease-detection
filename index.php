@@ -286,15 +286,15 @@ function fetchMoisture() {
         .then(response => response.text())
         .then(data => {
             const moistureDisplay = document.getElementById('moistureSensor');
-            if (data === '-') {
-                moistureDisplay.innerText = "OFF";
-                moistureDisplay.style.color = "#ff4444";
-                moistureDisplay.style.fontStyle = "italic";
-            } else {
-                moistureDisplay.innerText = data + '%';
-                moistureDisplay.style.color = "";
-                moistureDisplay.style.fontStyle = "";
-            }
+                if (data === '-') {
+                    moistureDisplay.innerText = "OFF";
+                    moistureDisplay.style.color = "#ff4444";
+                    moistureDisplay.style.fontStyle = "italic";
+                } else {
+                    moistureDisplay.innerText = data + '%';
+                    moistureDisplay.style.color = "";
+                    moistureDisplay.style.fontStyle = "";
+                }
         })
         .catch(error => {
             console.error('Error fetching Soil Moisture Value:', error);
